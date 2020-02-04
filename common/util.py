@@ -28,9 +28,9 @@ TargetMappingFilePath = 'mapping/targets_mapping.yaml'
 PlatformOS = platform.dist()[0].lower()
 
 if len(platform.dist()[1].split(".")) == 2:
-  PlatformVersion = float(platform.dist()[1])
+    PlatformVersion = float(platform.dist()[1])
 else:
-  PlatformVersion = float(".".join(platform.dist()[1].split(".")[0:2]))
+    PlatformVersion = float(".".join(platform.dist()[1].split(".")[0:2]))
 
 def format_response(count, data=None, error=None):
     if data is None:
