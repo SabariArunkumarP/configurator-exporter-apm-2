@@ -26,7 +26,11 @@ FluentdPluginMappingFilePath = 'mapping/logging_plugins_mapping.yaml'
 FluentbitPluginMappingFilePath = 'mapping/logging_fb_plugins_mapping.yaml'
 TargetMappingFilePath = 'mapping/targets_mapping.yaml'
 PlatformOS = platform.dist()[0].lower()
-PlatformVersion = float(platform.dist()[1])
+
+if len(platform.dist()[1].split(".")) == 2:
+  PlatformVersion = float(platform.dist()[1])
+else:
+  PlatformVersion = float(".".join(platform.dist()[1].split(".")[0:2]))
 
 def format_response(count, data=None, error=None):
     if data is None:
