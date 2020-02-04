@@ -11,8 +11,8 @@ from config_handler import collectd_manager
 from config_handler import fluentd_manager
 from config_handler import fluentbit_manager
 from config_util import *
-from elasticsearch import Elasticsearch
-
+from elasticsearch import Elasticsearch, RequestsHttpConnection
+import base64
 CONFIG_WRITE_INTERVAL = 300
 timer = None
 
@@ -407,6 +407,8 @@ def get_target_status():
 def get_elasticsearch_status(host, index, port, protocol='http', username='', password=''):
     logger.info("Collecting elasticsearch status for the host %s for index %s" % (host, index))
     connections = "{}://{}:{}".format(protocol, str(host), str(port))
+    if password:
+        password = base64.b64decode(password)
     elastic_search = Elasticsearch([connections], verify_certs=False, connection_class=RequestsHttpConnection, http_auth=(username, password))
     try:
         index_alias = elastic_search.indices.get_alias(index + "_write")

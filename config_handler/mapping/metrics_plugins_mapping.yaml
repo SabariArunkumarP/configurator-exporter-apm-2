@@ -119,6 +119,53 @@ libvirt:
 # - name: libvirt_disk
 #   interval: 10
 
+# mapping for mysql plugin
+mysql:
+ - name: mysql
+   interval: 300
+   config:
+   - Mandatory: true
+     min: ''
+     dataType: string
+     max: ''
+     defaultValue: "root"
+     tooltip: Username for MySQL server
+     label: Username
+     fieldName: user
+   - Mandatory: true
+     min: ''
+     dataType: password
+     max: ''
+     defaultValue: "maplelabs"
+     tooltip: Password for MySQL server
+     label: Password
+     fieldName: password
+   - Mandatory: true
+     min: ''
+     dataType: string
+     max: ''
+     defaultValue: 127.0.0.1
+     tooltip: MySql Host IP
+     label: Host Ip
+     fieldName: host
+   - Mandatory: true
+     fieldName: documentsTypes
+     tooltip: document Types to be collected
+     label: Document Types
+     dataType: list
+     multiselect: true
+     defaultValue: ['databaseDetails', 'serverDetails', 'tableDetails']
+     options:
+      - label: 'databaseDetails'
+        value: 'databaseDetails'
+      - label: 'serverDetails'
+        value: 'serverDetails'
+      - label: 'tableDetails'
+        value: 'tableDetails'
+     min: ''
+     max: ''
+
+
 #mapping for Mongo
 mongod:
 - config:
@@ -168,51 +215,7 @@ mongod:
   interval: 300
   name: mongod
 
-# mapping for mysql plugin
-mysql:
- - name: mysql
-   interval: 300
-   config:
-   - Mandatory: true
-     min: ''
-     dataType: string
-     max: ''
-     defaultValue: "root"
-     tooltip: Username for MySQL server
-     label: Username
-     fieldName: user
-   - Mandatory: true
-     min: ''
-     dataType: password
-     max: ''
-     defaultValue: "maplelabs"
-     tooltip: Password for MySQL server
-     label: Password
-     fieldName: password
-   - Mandatory: true
-     min: ''
-     dataType: string
-     max: ''
-     defaultValue: 127.0.0.1
-     tooltip: MySql Host IP
-     label: Host Ip
-     fieldName: host
-   - Mandatory: true
-     fieldName: documentsTypes
-     tooltip: document Types to be collected
-     label: Document Types
-     dataType: list
-     multiselect: true
-     defaultValue: ['databaseDetails', 'serverDetails', 'tableDetails']
-     options:
-      - label: 'databaseDetails'
-        value: 'databaseDetails'
-      - label: 'serverDetails'
-        value: 'serverDetails'
-      - label: 'tableDetails'
-        value: 'tableDetails'
-     min: ''
-     max: ''
+
 
 # mapping for redis plugin
 redisdb:
@@ -241,12 +244,14 @@ redisdb:
      label: Document Types
      dataType: list
      multiselect: true
-     defaultValue: ['redisDetails', 'redisStat', 'keyspaceStat']
+     defaultValue: ['redisDetails', 'redisStat', 'redisPersistence', 'keyspaceStat']
      options:
       - label: 'redisDetails'
         value: 'redisDetails'
       - label: 'redisStat'
         value: 'redisStat'
+      - label: 'redisPersistence'
+        value: 'redisPersistence'
       - label: 'keyspaceStat'
         value: 'keyspaceStat'
      min: ''
@@ -542,14 +547,6 @@ topstats:
  - name: topstats
    interval: 10
    config:
-   - label: Number of processes to list
-     fieldName: maximum_grep
-     tooltip: Number of processes to list
-     Mandatory: true
-     dataType: Integer
-     defaultValue: 5
-     min: ''
-     max: ''
    - label: Resource
      fieldName: resource
      tooltip: Utilization type based on which top command result is grepped
@@ -719,7 +716,7 @@ elasticsearchagent:
      label: ES Username
      max: ''
      min: ''
-     tooltip: Username used to connect to elasticsearch
+     tooltip: ES Username used to connect to elasticsearch
    - Mandatory: true
      dataType: password
      defaultValue: 'elastic'
@@ -727,7 +724,7 @@ elasticsearchagent:
      label: ES Password
      max: ''
      min: ''
-     tooltip: Password used to connect to elasticsearch
+     tooltip: ES Password used to connect to elasticsearch
    - Mandatory: true
      fieldName: documentsTypes
      tooltip: document Types to be collected
@@ -745,6 +742,7 @@ elasticsearchagent:
      min: ''
      max: ''
 
+#mapping
 # mapping for prometheus linux
 prometheuslinux:
  - name: prometheuslinux
@@ -877,33 +875,49 @@ prometheusjmeter:
      label: Interval
      fieldName: interval
 
-# mapping for psstats plugin
-psstats:
- - name: psstats
-   interval: 500
-   config:
-   - label: Number of processes to list
-     fieldName: num_processes
-     tooltip: Number of processes to list. '*' if all processes are to be listed.
-     Mandatory: true
-     dataType: String
-     defaultValue: '*'
-     min: ''
-     max: ''
-   - label: Sort By
-     fieldName: sort_by
-     tooltip: Utilization type based on which output of ps command is to be sorted
-     Mandatory: true
-     dataType: String
-     multiselect: false
-     defaultValue: 'CPU'
-     options:
-      - label: 'Sort by CPU percentage util'
-        value: 'CPU'
-      - label: 'Sort by MEM percentage  util'
-        value: 'MEM'
-     min: ''
-     max: ''
+
+nodejs:
+  - interval: 300
+    name: nodejs
+    config:
+    - Mandatory: true
+      dataType: Integer
+      defaultValue: 8080
+      fieldName: port
+      label: Port
+      max: ''
+      min: ''
+      tooltip: port in which nodejs is exposed on localhost
+    - Mandatory: true
+      dataType: Integer
+      defaultValue: 60
+      fieldName: interval
+      label: Interval
+      max: ''
+      min: ''
+      tooltip: Polling Interval
+
+nodejsapi:
+  - interval: 300
+    name: nodejsapi
+    config:
+    - Mandatory: true
+      dataType: Integer
+      defaultValue: 8080
+      fieldName: port
+      label: Port
+      max: ''
+      min: ''
+      tooltip: port in which nodejs is exposed on localhost
+    - Mandatory: true
+      dataType: Integer
+      defaultValue: 300
+      fieldName: interval
+      label: Interval
+      max: ''
+      min: ''
+      tooltip: Polling Interval
+
 
 #mapping for esa plugin
 #esalogstore:

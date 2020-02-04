@@ -18,5 +18,5 @@ EXPORTERLOGPATH = 'log'
 LOGFILE = 'configurator_exporter.log'
 FORMATTER = '[*(asctime)s-*(filename)s:*(name)s:*(lineno)s-*(funcName)s()] -*(levelname)s: *(message)s'
 STATS_DATADIR = "/opt/sfapm/collectd/var/lib/data"
-FluentdPluginConfDir = "/etc/td-agent"
+FluentdPluginConfDir = "/opt/sfapm/td-agent/etc/td-agent"
 FluentbitPluginConfDir = "/opt/sfapm/td-agent-bit/etc/td-agent-bit"

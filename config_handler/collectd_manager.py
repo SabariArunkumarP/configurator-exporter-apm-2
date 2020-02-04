@@ -8,7 +8,7 @@
 import copy
 import socket
 from mako.template import Template
-
+import base64
 from config_util import *
 
 
@@ -146,7 +146,7 @@ class CollectdManager:
             for target, conf in self.targets.items():
                 filename = get_dest_filename(target)
                 if 'password' in conf['elasticsearch']['config'] and conf['elasticsearch']['config']['password']:
-                    conf['elasticsearch']['config']['password'] = conf['elasticsearch']['config']['password']
+                    conf['elasticsearch']['config']['password'] = base64.b64decode(conf['elasticsearch']['config']['password'])
                 (success, section_cfg) = self.get_section_cfg(target, section=conf)
                 self.logger.debug("success: " + str(success) +
                                   " section_cfg: " + section_cfg)
@@ -248,10 +248,6 @@ class CollectdManager:
                                 del plugin_temp[CONFIG_DATA]
                             # Propulate TARGETS ,INTERVAL,TAGS in each plugin
                             plugin_temp[TARGETS] = target_names_list
-
-                            if INTERVAL in profile:
-                                plugin_temp[INTERVAL] = profile[INTERVAL]
-
                             if INTERVAL not in plugin_temp:
                                 plugin_temp[INTERVAL] = self.interval
                             plugin_temp[TAGS] = self.tag_list
@@ -356,6 +352,9 @@ class CollectdManager:
                     #     pass
 
             metrics[TARGETS] = target_list
+            for target in metrics[TARGETS]:
+                if "password" in target and target['password']:
+                    target["password"] = base64.b64encode(target["password"])
             metrics[ENABLED] = self.collector_dict.get(ENABLED, True)
             metrics[TAGS] = self.collector_dict.get(TAGS, {})
             # Store config data
